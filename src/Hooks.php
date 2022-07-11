@@ -31,9 +31,13 @@ class Hooks {
 		$engine,
 		array &$extraLibraries
 	): void {
-		if ( $engine === 'lua' ) {
-			$extraLibraries[ 'mw.toolhub' ] = '';
+		if ( $engine !== 'lua' ) {
+			return;
 		}
+		$extraLibraries[ 'mw.ext.toolhub' ] = [
+			'class' => CoreLibrary::class,
+			'deferLoad' => true,
+		];
 	}
 
 }
