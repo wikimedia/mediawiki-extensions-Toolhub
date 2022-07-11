@@ -1,5 +1,5 @@
 {
-	"name": "BoilerPlate",
+	"name": "Toolhub",
 	"private": true,
 	"scripts": {
 		"test": "grunt test"
