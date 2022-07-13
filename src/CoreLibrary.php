@@ -21,12 +21,10 @@ namespace MediaWiki\Extension\Toolhub;
 
 use array_unshift;
 use is_array;
-use MediaWiki\MediaWikiServices;
-use preg_match;
 use Scribunto_LuaLibraryBase;
 
 /**
- * Toolhub API client for Scribunto.
+ * Toolhub API integration for Scribunto.
  *
  * @copyright © 2022 Wikimedia Foundation and contributors
  */
@@ -89,15 +87,9 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 */
 	public function getTool( $name ) {
 		// FIXME: validate args in PHP so we can simplify the lua side
-		// FIXME: toolhub base url should be a config var
-		$req = "https://toolhub.wikimedia.org/api/tools/{$name}/";
-		$http = MediaWikiServices::getInstance()->getHttpRequestFactory();
-		$resp = $http->get( $req, [], __METHOD__ );
-		if ( $resp === null ) {
-			// FIXME: what should happen here?
-			return [ 'error' => 'Got a null response so BOOM!' ];
-		}
+		$api = ToolhubServices::getApiClient();
+		$resp = $api->getToolByName( $name );
 		// FIXME: cache non-negative results
-		return $this->toLua( json_decode( $resp, true ) );
+		return $this->toLua( $resp );
 	}
 }

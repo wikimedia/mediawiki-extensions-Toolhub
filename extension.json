@@ -15,22 +15,21 @@
 		"MediaWiki\\Extension\\Toolhub\\": "src/"
 	},
 	"config": {
-		"BoilerPlateEnableFoo": {
-			"description": "Enable the Foo feature.",
-			"value": true
-		},
-		"BoilerPlateVandalizeEachPage": {
-			"description": "Write 'BoilerPlate was here' on each page",
-			"value": false
+		"ToolhubBaseUrl": {
+			"description": "Base URL for Toolhub instance",
+			"value": "https://toolhub.wikimedia.org"
 		}
+	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
+	"Hooks": {
+		"ScribuntoExternalLibraries": "ToolhubHooks"
 	},
 	"HookHandlers": {
 		"ToolhubHooks": {
 			"class": "MediaWiki\\Extension\\Toolhub\\Hooks"
 		}
-	},
-	"Hooks": {
-		"ScribuntoExternalLibraries": "ToolhubHooks"
 	},
 	"MessagesDirs": {
 		"Toolhub": [
