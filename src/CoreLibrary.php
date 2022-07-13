@@ -67,11 +67,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 */
 	private function asLuaValue( $val ) {
 		$type = $this->getLuaType( $val );
-		if (
-			$type === 'nil' ||
-			$type === 'function' ||
-			preg_match( '/^PHP .*/', $val )
-		) {
+		if ( $type === 'nil' || $type === 'function' ) {
 			return null;
 		}
 		if ( is_array( $val ) ) {
