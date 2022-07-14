@@ -55,7 +55,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @param mixed $val
 	 * @return mixed
 	 */
-	private function toLua( mixed $val ): mixed {
+	private function toLua( $val ) {
 		return [ $this->asLuaValue( $val ) ];
 	}
 
@@ -65,7 +65,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @param mixed $val
 	 * @return mixed
 	 */
-	private function asLuaValue( mixed $val ): mixed {
+	private function asLuaValue( $val ) {
 		$type = $this->getLuaType( $val );
 		if ( $type === 'nil' || $type === 'function' ) {
 			return null;
