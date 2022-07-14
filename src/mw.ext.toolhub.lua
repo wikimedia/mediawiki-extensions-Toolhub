@@ -51,4 +51,14 @@ function toolhub.getList( id )
     return php.getList( id )
 end
 
+--- Search for tools.
+--
+-- @param query User provided query
+-- @param page Result page to return
+-- @param pageSize Number of tools per page
+-- @return Table of list data
+function toolhub.findTools( query, page, pageSize )
+    return php.findTools( query, page, pageSize )
+end
+
 return toolhub

@@ -40,6 +40,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 		$lib = [
 			'getTool' => [ $this, 'getTool' ],
 			'getList' => [ $this, 'getList' ],
+			'findTools' => [ $this, 'findTools' ],
 		];
 		$settings = [];
 		return $this->getEngine()->registerInterface(
@@ -105,6 +106,28 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 		$this->checkType( 'getList', 1, $id, 'number' );
 		$api = ToolhubServices::getApiClient();
 		$resp = $api->getListById( $id );
+		// FIXME: cache non-negative results
+		return $this->toLua( $resp );
+	}
+
+	/**
+	 * Search for tools.
+	 *
+	 * @param ?string $query User provided query
+	 * @param int $page Result page
+	 * @param int $pageSize Number of tools per page
+	 * @return array
+	 */
+	public function findTools(
+		?string $query = null,
+		int $page = 1,
+		int $pageSize = 25
+	): array {
+		$this->checkTypeOptional( 'findTools', 1, $query, 'string', null );
+		$this->checkType( 'findTools', 2, $page, 'number' );
+		$this->checkType( 'findTools', 3, $pageSize, 'number' );
+		$api = ToolhubServices::getApiClient();
+		$resp = $api->findTools( $query, $page, $pageSize );
 		// FIXME: cache non-negative results
 		return $this->toLua( $resp );
 	}

@@ -62,6 +62,51 @@ class ApiClient implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Build a query string from an array of key => value pairs.
+	 *
+	 * @param array $params
+	 * @return string URL encoded query string
+	 */
+	public static function makeQueryString( array $params ): string {
+		$params = array_filter(
+			$params,
+			static function ( $v ) {
+				return $v !== null;
+			}
+		);
+		ksort( $params );
+		return http_build_query( $params );
+	}
+
+	/**
+	 * Perform an HTTP request.
+	 *
+	 * @param string $verb HTTP verb
+	 * @param string $url Full URL including query string if needed
+	 * @param array $opts See HttpRequestFactory::create
+	 * @param string $caller The method making this request, for profiling
+	 * @return array Response data
+	 */
+	public function makeApiCall(
+		string $verb,
+		string $url,
+		array $opts,
+		string $caller
+	) {
+		// FIXME: add defaults to $opts:
+		// Accept header
+		// Content-Type header
+		// Accept-Language header?
+		// User-Agent header
+		$resp = $this->requestFactory->request( $verb, $url, $opts, $caller );
+		if ( $resp === null ) {
+			// FIXME: what should really happen here?
+			return [ 'error' => 'Got a null response so BOOM!' ];
+		}
+		return json_decode( $resp, true );
+	}
+
+	/**
 	 * Get info for a specific tool.
 	 *
 	 * @param string $name Name of the tool
@@ -70,12 +115,7 @@ class ApiClient implements LoggerAwareInterface {
 	public function getToolByName( string $name ): array {
 		$escName = urlencode( $name );
 		$req = "{$this->baseUrl}/api/tools/{$escName}/";
-		$resp = $this->requestFactory->get( $req, [], __METHOD__ );
-		if ( $resp === null ) {
-			// FIXME: what should happen here?
-			return [ 'error' => 'Got a null response so BOOM!' ];
-		}
-		return json_decode( $resp, true );
+		return $this->makeApiCall( 'GET', $req, [], __METHOD__ );
 	}
 
 	/**
@@ -86,11 +126,31 @@ class ApiClient implements LoggerAwareInterface {
 	 */
 	public function getListById( int $id ): array {
 		$req = "{$this->baseUrl}/api/lists/{$id}/";
-		$resp = $this->requestFactory->get( $req, [], __METHOD__ );
-		if ( $resp === null ) {
-			// FIXME: what should happen here?
-			return [ 'error' => 'Got a null response so BOOM!' ];
-		}
-		return json_decode( $resp, true );
+		return $this->makeApiCall( 'GET', $req, [], __METHOD__ );
+	}
+
+	/**
+	 * Search for tools.
+	 *
+	 * @param ?string $query User provided query
+	 * @param int $page Result page
+	 * @param int $pageSize Number of tools per page
+	 * @return array
+	 */
+	public function findTools(
+		?string $query = null,
+		int $page = 1,
+		int $pageSize = 25
+	): array {
+		$qs = self::makeQueryString(
+			[
+				'q' => $query,
+				'ordering' => '-score',
+				'page' => $page,
+				'page_size' => $pageSize,
+			]
+		);
+		$req = "{$this->baseUrl}/api/search/tools/?{$qs}";
+		return $this->makeApiCall( 'GET', $req, [], __METHOD__ );
 	}
 }

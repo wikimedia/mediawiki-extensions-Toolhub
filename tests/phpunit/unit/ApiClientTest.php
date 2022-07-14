@@ -30,7 +30,7 @@ class ApiClientTest extends TestCase {
 		if ( $status > 0 && $status < 400 ) {
 			$reqStatus = StatusValue::newGood( $status );
 		} else {
-			$reqStatus = StatusValue::newBad( $status );
+			$reqStatus = StatusValue::newFatal( $status );
 		}
 		$req->expects( $this->once() )
 			->method( 'execute' )
@@ -65,6 +65,21 @@ class ApiClientTest extends TestCase {
 		);
 	}
 
+	public function testMakeQueryString() {
+		$params = [
+			'q' => 'toolhub',
+			'void' => null,
+			'page' => 1,
+			'ordering' => '-score',
+			'page_size' => 25,
+			'null' => null,
+		];
+		$this->assertEquals(
+			'ordering=-score&page=1&page_size=25&q=toolhub',
+			ApiClient::makeQueryString( $params )
+		);
+	}
+
 	public function testGetToolByName() {
 		$fixture = $this->getFixture( 200, '{"mock": "response"}' );
 		$res = $fixture->getToolByName( 'test' );
@@ -75,6 +90,13 @@ class ApiClientTest extends TestCase {
 	public function testGetListById() {
 		$fixture = $this->getFixture( 200, '{"mock": "response"}' );
 		$res = $fixture->getListById( 1 );
+		$this->assertNotNull( $res );
+		$this->assertEquals( [ "mock" => "response" ], $res );
+	}
+
+	public function testFindTools() {
+		$fixture = $this->getFixture( 200, '{"mock": "response"}' );
+		$res = $fixture->findTools( 'toolhub' );
 		$this->assertNotNull( $res );
 		$this->assertEquals( [ "mock" => "response" ], $res );
 	}
