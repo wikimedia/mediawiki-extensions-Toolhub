@@ -88,7 +88,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @return array
 	 */
 	public function getTool( string $name ): array {
-		// FIXME: validate args in PHP so we can simplify the lua side
+		$this->checkType( 'getTool', 1, $name, 'string' );
 		$api = ToolhubServices::getApiClient();
 		$resp = $api->getToolByName( $name );
 		// FIXME: cache non-negative results
@@ -102,7 +102,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @return array
 	 */
 	public function getList( int $id ): array {
-		// FIXME: validate args in PHP so we can simplify the lua side
+		$this->checkType( 'getList', 1, $id, 'number' );
 		$api = ToolhubServices::getApiClient();
 		$resp = $api->getListById( $id );
 		// FIXME: cache non-negative results

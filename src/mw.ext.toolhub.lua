@@ -40,7 +40,6 @@ end
 -- @param name Name of tool
 -- @return table of toolinfo data
 function toolhub.getTool( name )
-    checkType( 'getTool', 1, name, 'string' )
     return php.getTool( name )
 end
 
@@ -49,7 +48,6 @@ end
 -- @param id List id
 -- @return Table of list data
 function toolhub.getList( id )
-    checkType( 'getList', 1, id, 'number' )
     return php.getList( id )
 end
 
