@@ -72,4 +72,11 @@ class ApiClientTest extends TestCase {
 		$this->assertEquals( [ "mock" => "response" ], $res );
 	}
 
+	public function testGetListById() {
+		$fixture = $this->getFixture( 200, '{"mock": "response"}' );
+		$res = $fixture->getListById( 1 );
+		$this->assertNotNull( $res );
+		$this->assertEquals( [ "mock" => "response" ], $res );
+	}
+
 }

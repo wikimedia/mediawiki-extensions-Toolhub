@@ -20,7 +20,10 @@ local php
 local util = require 'libraryUtil'
 local checkType = util.checkType
 
-function toolhub.setupInterface( option )
+--- Handle interface registration.
+--
+-- @param options Table of options
+function toolhub.setupInterface( options )
     toolhub.setupInterface = nil
     php = mw_interface
     mw_interface = nil
@@ -32,6 +35,10 @@ function toolhub.setupInterface( option )
     package.loaded[ 'mw.ext.toolhub' ] = toolhub
 end
 
+--- Get info for a specific tool.
+--
+-- @param name Name of tool
+-- @return table of toolinfo data
 function toolhub.getTool( name )
     checkType( 'getTool', 1, name, 'string' )
     return php.getTool( name )

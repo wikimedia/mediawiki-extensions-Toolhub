@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +67,7 @@ class ApiClient implements LoggerAwareInterface {
 	 * @param string $name Name of the tool
 	 * @return array
 	 */
-	public function getToolByName( $name ) {
+	public function getToolByName( string $name ): array {
 		$escName = urlencode( $name );
 		$req = "{$this->baseUrl}/api/tools/{$escName}/";
 		$resp = $this->requestFactory->get( $req, [], __METHOD__ );

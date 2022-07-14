@@ -1,4 +1,5 @@
 <?php
+declare( strict_types = 1 );
 /**
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 *
 	 * @return array Lua package
 	 */
-	public function register() {
+	public function register(): array {
 		$lib = [
 			'getTool' => [ $this, 'getTool' ],
 			'getList' => [ $this, 'getList' ],
@@ -54,7 +55,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @param mixed $val
 	 * @return mixed
 	 */
-	private function toLua( $val ) {
+	private function toLua( mixed $val ): mixed {
 		return [ $this->asLuaValue( $val ) ];
 	}
 
@@ -64,7 +65,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @param mixed $val
 	 * @return mixed
 	 */
-	private function asLuaValue( $val ) {
+	private function asLuaValue( mixed $val ): mixed {
 		$type = $this->getLuaType( $val );
 		if ( $type === 'nil' || $type === 'function' ) {
 			return null;
@@ -86,7 +87,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * @param string $name Name of the tool
 	 * @return array
 	 */
-	public function getTool( $name ) {
+	public function getTool( string $name ): array {
 		// FIXME: validate args in PHP so we can simplify the lua side
 		$api = ToolhubServices::getApiClient();
 		$resp = $api->getToolByName( $name );
