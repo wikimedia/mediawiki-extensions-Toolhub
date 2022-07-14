@@ -76,4 +76,20 @@ class ApiClient implements LoggerAwareInterface {
 		}
 		return json_decode( $resp, true );
 	}
+
+	/**
+	 * Get info for a specific list.
+	 *
+	 * @param int $id List id
+	 * @return array
+	 */
+	public function getListById( int $id ): array {
+		$req = "{$this->baseUrl}/api/lists/{$id}/";
+		$resp = $this->requestFactory->get( $req, [], __METHOD__ );
+		if ( $resp === null ) {
+			// FIXME: what should happen here?
+			return [ 'error' => 'Got a null response so BOOM!' ];
+		}
+		return json_decode( $resp, true );
+	}
 }

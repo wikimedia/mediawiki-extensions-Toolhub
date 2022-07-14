@@ -38,6 +38,7 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	public function register() {
 		$lib = [
 			'getTool' => [ $this, 'getTool' ],
+			'getList' => [ $this, 'getList' ],
 		];
 		$settings = [];
 		return $this->getEngine()->registerInterface(
@@ -89,6 +90,20 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 		// FIXME: validate args in PHP so we can simplify the lua side
 		$api = ToolhubServices::getApiClient();
 		$resp = $api->getToolByName( $name );
+		// FIXME: cache non-negative results
+		return $this->toLua( $resp );
+	}
+
+	/**
+	 * Get info for a specific list.
+	 *
+	 * @param int $id List id
+	 * @return array
+	 */
+	public function getList( int $id ): array {
+		// FIXME: validate args in PHP so we can simplify the lua side
+		$api = ToolhubServices::getApiClient();
+		$resp = $api->getListById( $id );
 		// FIXME: cache non-negative results
 		return $this->toLua( $resp );
 	}
