@@ -54,9 +54,10 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 * Cast a value to a Lua compatible form.
 	 *
 	 * @param mixed $val
-	 * @return mixed
+	 * @return array
 	 */
-	private function toLua( $val ) {
+	private function toLua( $val ): array {
+		// Return as an array to match Lua semantics of multiple return values
 		return [ $this->asLuaValue( $val ) ];
 	}
 
@@ -68,14 +69,21 @@ class CoreLibrary extends Scribunto_LuaLibraryBase {
 	 */
 	private function asLuaValue( $val ) {
 		$type = $this->getLuaType( $val );
-		if ( $type === 'nil' || $type === 'function' ) {
+		if (
+			$type === 'nil' ||
+			$type === 'function' ||
+			// PHP type without direct Lua mapping
+			preg_match( '/^PHP .*/', $type )
+		) {
+			// Strip out things that have no native Lua representation
 			return null;
 		}
 		if ( is_array( $val ) ) {
 			foreach ( $val as $key => $value ) {
-				/* $val[ $key ] = $this->toLua( $value ); */
 				$val[ $key ] = $this->asLuaValue( $value );
 			}
+			// Make arrays be 1-based (Lua) rather than 0-based (PHP) by
+			// prepending a new [0] element and then deleting it.
 			array_unshift( $val, '' );
 			unset( $val[0] );
 		}

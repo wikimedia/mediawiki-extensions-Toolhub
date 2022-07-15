@@ -92,7 +92,7 @@ class ApiClient implements LoggerAwareInterface {
 		string $url,
 		array $opts,
 		string $caller
-	) {
+	): array {
 		// FIXME: add defaults to $opts:
 		// Accept header
 		// Content-Type header
