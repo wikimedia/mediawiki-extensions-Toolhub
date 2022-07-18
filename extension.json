@@ -42,17 +42,5 @@
 		"Toolhub": [
 			"i18n"
 		]
-	},
-	"ResourceModules": {
-		"ext.toolhub": {
-			"localBasePath": "resources/ext.toolhub",
-			"remoteExtPath": "Toolhub/resources/ext.toolhub",
-			"dependencies": [],
-			"styles": [],
-			"packageFiles": [
-				"init.js"
-			],
-			"messages": []
-		}
 	}
 }
