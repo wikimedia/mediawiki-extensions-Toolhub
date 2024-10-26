@@ -22,14 +22,14 @@ namespace MediaWiki\Extension\Toolhub;
 
 use array_unshift;
 use is_array;
-use Scribunto_LuaLibraryBase;
+use MediaWiki\Extension\Scribunto\Engines\LuaCommon\LibraryBase;
 
 /**
  * Toolhub API integration for Scribunto.
  *
  * @copyright © 2022 Wikimedia Foundation and contributors
  */
-class CoreLibrary extends Scribunto_LuaLibraryBase {
+class CoreLibrary extends LibraryBase {
 
 	/**
 	 * Register the library.
