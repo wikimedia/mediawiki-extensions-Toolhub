@@ -30,7 +30,7 @@ class ToolhubServices {
 	 * @return ApiClient
 	 */
 	public static function getApiClient(
-		ContainerInterface $services = null
+		?ContainerInterface $services = null
 	): ApiClient {
 		return ( $services ?: MediaWikiServices::getInstance() )
 			->get( 'Toolhub.ApiClient' );
