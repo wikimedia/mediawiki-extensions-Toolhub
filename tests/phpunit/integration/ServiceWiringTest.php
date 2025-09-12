@@ -26,7 +26,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 
 /**
- *
  * @copyright © 2022 Wikimedia Foundation and contributors
  * @coversNothing
  */
