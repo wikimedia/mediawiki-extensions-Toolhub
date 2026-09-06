@@ -32,12 +32,7 @@ use Psr\Log\NullLogger;
  */
 class ApiClient implements LoggerAwareInterface {
 
-	/** @var HttpRequestFactory */
-	private $requestFactory;
-	/** @var string */
-	private $baseUrl;
-	/** @var LoggerInterface */
-	private $logger;
+	private LoggerInterface $logger;
 
 	/**
 	 * Constructor.
@@ -46,11 +41,9 @@ class ApiClient implements LoggerAwareInterface {
 	 * @param string $baseUrl
 	 */
 	public function __construct(
-		HttpRequestFactory $requestFactory,
-		string $baseUrl
+		private readonly HttpRequestFactory $requestFactory,
+		private readonly string $baseUrl,
 	) {
-		$this->requestFactory = $requestFactory;
-		$this->baseUrl = $baseUrl;
 		$this->logger = new NullLogger;
 	}
 
